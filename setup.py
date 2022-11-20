@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="scribber",
-    version="v0.0.3",
+    version="v0.0.5",
     author="Evgeniy Semenov",
     author_email="edelwi@yandex.ru",
     description="A simple document generator with not very rich functionality that can export a document to "
@@ -16,7 +16,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     # entry_points={},
     install_requires=[
-        'lxml>=4.6.0,<5.0.0',
+        'lxml>=4.9.1,<5.0.0',
         'pydantic>=1.8.0,<2.0.0',
         'python-docx>=0.8.0,<1.0.0',
         'typing_extensions>=4.0.0,<5.0.0'
