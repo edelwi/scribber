@@ -5,6 +5,10 @@
 A simple document generator with not very rich functionality that can export a document to some formats such 
 as text, docx, xlsx and markdown.
 
+## Installation
+```shell
+pip install scribber
+```
 
 ## Usage
 
