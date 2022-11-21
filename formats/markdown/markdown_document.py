@@ -22,7 +22,9 @@ class MarkdownDocument:
 
     def _render_title(self, title: Title) -> None:
         str_len = len(title.title)
-        self._report += (self._title_starter * title.level) + " " + title.title + self._line_brake
+        self._report += (
+            (self._title_starter * title.level) + " " + title.title + self._line_brake
+        )
 
     def get_result(self) -> str:
         for item in self.parts:
@@ -69,17 +71,32 @@ class MarkdownDocument:
             headers_justified.append(f"{itm : ^{col_length[i]}}")
             headers_bottom.append(self._col_justify)
             i += 1
-        self._report += self._col_starter + self._col_divider.join(headers_justified) + self._col_stopper + self._line_brake
+        self._report += (
+            self._col_starter
+            + self._col_divider.join(headers_justified)
+            + self._col_stopper
+            + self._line_brake
+        )
         # self._report += table_line_separator
-        self._report += self._col_starter + self._col_divider.join(headers_bottom) + self._col_stopper + self._line_brake
+        self._report += (
+            self._col_starter
+            + self._col_divider.join(headers_bottom)
+            + self._col_stopper
+            + self._line_brake
+        )
 
         for line in item.content:
             i = 0
             content_justified = []
             for itm in item.headers:
-                content_justified.append(f"{line[i] : ^{col_length[i]}}")
+                content_justified.append(f"{str(line[i]) : ^{col_length[i]}}")
                 i += 1
-            self._report += self._col_starter + self._col_divider.join(content_justified) + self._col_starter + self._line_brake
+            self._report += (
+                self._col_starter
+                + self._col_divider.join(content_justified)
+                + self._col_starter
+                + self._line_brake
+            )
         self._report += self._line_brake
 
 

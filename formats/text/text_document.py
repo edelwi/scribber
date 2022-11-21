@@ -71,7 +71,7 @@ class TextDocument:
             i = 0
             content_justified = []
             for itm in item.headers:
-                content_justified.append(f"{line[i] : ^{col_length[i]}}")
+                content_justified.append(f"{str(line[i]) : ^{col_length[i]}}")
                 i += 1
             self._report += self._col_divider.join(content_justified) + self._line_brake
         self._report += table_line_separator
