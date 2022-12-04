@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import FilePath
 
-from core.document import Title, Paragraph, EmptyLine, Table, Builder
+from core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
 from docx import Document
 
 
@@ -28,6 +28,8 @@ class WordDocument:
                 self._render_brake()
             elif isinstance(item, Table):
                 self._render_table(item)
+            elif isinstance(item, CodeBlock):
+                self._render_code_block(item)
         return self._report
 
     def save(self, filename: FilePath):
@@ -35,6 +37,9 @@ class WordDocument:
 
     def _render_paragraph(self, paragraph: Paragraph):
         self._report.add_paragraph(paragraph.text)
+
+    def _render_code_block(self, code_block: CodeBlock):
+        self._report.add_paragraph(code_block.code, style='Intense Quote')
 
     def _render_brake(self):
         self._report.add_paragraph("")
@@ -74,3 +79,6 @@ class WordDocumentBuilder(Builder):
 
     def add_brake(self):
         self._word_report.add(EmptyLine())
+
+    def add_code_block(self, code_block: CodeBlock):
+        self._word_report.add(code_block)

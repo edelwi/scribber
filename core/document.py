@@ -27,6 +27,16 @@ class Paragraph(BaseModel):
         return v
 
 
+class CodeBlock(BaseModel):
+    code: str
+    style: str
+
+    @validator("code")
+    def field_not_empty(cls, v):
+        assert len(v) > 0, "must be one or more symbols"
+        return v
+
+
 class Table(BaseModel):
     headers: List[str]
     content: List[Any]
@@ -71,6 +81,10 @@ class Builder(ABC):
         pass
 
     @abstractmethod
+    def add_code_block(self, code_block: CodeBlock) -> None:
+        pass
+
+    @abstractmethod
     def add_brake(self):
         pass
 
@@ -97,3 +111,5 @@ class Director:
                 self.builder.add_brake()
             elif isinstance(item, Table):
                 self.builder.add_table(item)
+            elif isinstance(item, CodeBlock):
+                self.builder.add_code_block(item)

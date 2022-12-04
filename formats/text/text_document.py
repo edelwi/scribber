@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import FilePath
 
-from core.document import Title, Paragraph, EmptyLine, Table, Builder
+from core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
 
 
 class TextDocument:
@@ -31,6 +31,8 @@ class TextDocument:
                 self._render_brake()
             elif isinstance(item, Table):
                 self._render_table(item)
+            elif isinstance(item, CodeBlock):
+                self._render_code_block(item)
         return self._report
 
     def save(self, filename: FilePath):
@@ -39,6 +41,9 @@ class TextDocument:
 
     def _render_paragraph(self, paragraph: Paragraph):
         self._report += paragraph.text + self._line_brake
+
+    def _render_code_block(self, code_block: CodeBlock):
+        self._report += code_block.code + self._line_brake
 
     def _render_brake(self):
         self._report += self._line_brake
@@ -101,3 +106,6 @@ class TextDocumentBuilder(Builder):
 
     def add_brake(self):
         self._text_report.add(EmptyLine())
+
+    def add_code_block(self, code_block: CodeBlock):
+        self._text_report.add(code_block)

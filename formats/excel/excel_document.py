@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import FilePath
 
-from core.document import Title, Paragraph, EmptyLine, Table, Builder
+from core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
 
 import xlsxwriter
 
@@ -33,6 +33,8 @@ class ExcelDocument:
                 self._render_brake()
             elif isinstance(item, Table):
                 self._render_table(item)
+            elif isinstance(item, CodeBlock):
+                self._render_code_block(item)
         return self._workbook
 
     def save(self, filename: FilePath):
@@ -42,6 +44,11 @@ class ExcelDocument:
     def _render_paragraph(self, paragraph: Paragraph):
         self._report.write(self._row, self._col, paragraph.text)
         self._row += 1
+
+    def _render_code_block(self, code_block: CodeBlock):
+        for line in code_block.code.split(sep="\n"):
+            self._report.write(self._row, self._col, line)
+            self._row += 1
 
     def _render_brake(self):
         self._row += 1
@@ -85,3 +92,6 @@ class ExcelDocumentBuilder(Builder):
 
     def add_brake(self):
         self._excel_report.add(EmptyLine())
+
+    def add_code_block(self, code_block: CodeBlock):
+        self._excel_report.add(code_block)

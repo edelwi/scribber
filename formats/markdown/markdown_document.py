@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import FilePath
 
-from core.document import Title, Paragraph, EmptyLine, Table, Builder
+from core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
 
 
 class MarkdownDocument:
@@ -16,6 +16,7 @@ class MarkdownDocument:
         self._col_starter = self._col_divider + " "
         self._col_stopper = " " + self._col_divider
         self._col_justify = " :---: "
+        self._code_block_border = """```"""
 
     def add(self, part: Any) -> None:
         self.parts.append(part)
@@ -36,6 +37,8 @@ class MarkdownDocument:
                 self._render_brake()
             elif isinstance(item, Table):
                 self._render_table(item)
+            elif isinstance(item, CodeBlock):
+                self._render_code_block(item)
         return self._report
 
     def save(self, filename: FilePath):
@@ -44,6 +47,15 @@ class MarkdownDocument:
 
     def _render_paragraph(self, paragraph: Paragraph):
         self._report += paragraph.text + (self._line_brake * 2)
+
+    def _render_code_block(self, code_block: CodeBlock):
+        _codeblock_head = (
+            f"""{self._code_block_border}{code_block.style}{self._line_brake}"""
+        )
+        _codeblock_tail = (
+            f"""{self._line_brake}{self._code_block_border}{self._line_brake * 2}"""
+        )
+        self._report += _codeblock_head + code_block.code + _codeblock_tail
 
     def _render_brake(self):
         self._report += self._line_brake
@@ -124,3 +136,6 @@ class MarkdownDocumentBuilder(Builder):
 
     def add_brake(self):
         self._text_report.add(EmptyLine())
+
+    def add_code_block(self, code_block: CodeBlock):
+        self._text_report.add(code_block)

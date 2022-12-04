@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="scribber",
-    version="v0.0.10",
+    version="v0.0.11",
     author="Evgeniy Semenov",
     author_email="edelwi@yandex.ru",
     description="A simple document generator with not very rich functionality that can export a document to "
