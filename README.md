@@ -13,11 +13,19 @@ pip install scribber
 ## Usage
 
 ```python
-from scribber.core.document import SimpleDocument, Title, EmptyLine, Paragraph, Table, Director
-from scribber.formats.excel.excel_document import ExcelDocumentBuilder
-from scribber.formats.markdown.markdown_document import MarkdownDocumentBuilder
-from scribber.formats.text.text_document import TextDocumentBuilder
-from scribber.formats.word.word_document import WordDocumentBuilder
+from scribber import (
+    SimpleDocument,
+    Title,
+    EmptyLine,
+    Paragraph,
+    Table,
+    Director,
+    CodeBlock,
+    ExcelDocumentBuilder,
+    MarkdownDocumentBuilder,
+    TextDocumentBuilder,
+    WordDocumentBuilder,
+)
 
 doc = SimpleDocument()
 doc.add(Title(title="Funny report"))

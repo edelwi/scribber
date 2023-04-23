@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="scribber",
-    version="v0.1.12",
+    version="v0.1.16",
     author="Evgeniy Semenov",
     author_email="edelwi@yandex.ru",
     license="MIT",
@@ -14,8 +14,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/edelwi/scribber",
-    package_dir={"": "scribber"},
-    packages=setuptools.find_packages(where="scribber"),
+    packages=setuptools.find_packages(exclude=["examples.test.*"]),
     # entry_points={},
     install_requires=[
         'lxml>=4.9.0,<5.0.0',
@@ -24,6 +23,9 @@ setuptools.setup(
         'typing_extensions>=4.4.0,<5.0.0',
         'XlsxWriter>=3.0.3,<4.0.0',
         ],
+    extras_require={
+        "dev": ["twine>=4.0.2"],
+    },
     python_requires=">=3.10",
     classifiers=[
         "Development Status :: 1 - Planning",

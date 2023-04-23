@@ -1,4 +1,4 @@
-from scribber.core.document import (
+from scribber import (
     SimpleDocument,
     Title,
     EmptyLine,
@@ -6,11 +6,11 @@ from scribber.core.document import (
     Table,
     Director,
     CodeBlock,
+    ExcelDocumentBuilder,
+    MarkdownDocumentBuilder,
+    TextDocumentBuilder,
+    WordDocumentBuilder,
 )
-from scribber.formats.excel.excel_document import ExcelDocumentBuilder
-from scribber.formats.markdown.markdown_document import MarkdownDocumentBuilder
-from scribber.formats.text.text_document import TextDocumentBuilder
-from scribber.formats.word.word_document import WordDocumentBuilder
 
 CODE_EXAMPLE = """
 import platform
