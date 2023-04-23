@@ -2,24 +2,30 @@ from typing import Any
 
 from pydantic import FilePath
 
-from core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
+from scribber.core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
 
 
-class TextDocument:
+class MarkdownDocument:
     def __init__(self) -> None:
         self.parts = []
         self._report = ""
         self._line_brake = "\n"
         self._line_divider = "-"
         self._col_divider = "|"
+        self._title_starter = "#"
+        self._col_starter = self._col_divider + " "
+        self._col_stopper = " " + self._col_divider
+        self._col_justify = " :---: "
+        self._code_block_border = """```"""
 
     def add(self, part: Any) -> None:
         self.parts.append(part)
 
     def _render_title(self, title: Title) -> None:
-        str_len = len(title.title)
-        self._report += title.title + self._line_brake
-        self._report += "=" * str_len + self._line_brake
+        # str_len = len(title.title)
+        self._report += (
+            (self._title_starter * title.level) + " " + title.title + self._line_brake
+        )
 
     def get_result(self) -> str:
         for item in self.parts:
@@ -40,10 +46,16 @@ class TextDocument:
             f.write(self.get_result())
 
     def _render_paragraph(self, paragraph: Paragraph):
-        self._report += paragraph.text + self._line_brake
+        self._report += paragraph.text + (self._line_brake * 2)
 
     def _render_code_block(self, code_block: CodeBlock):
-        self._report += code_block.code + self._line_brake
+        _codeblock_head = (
+            f"""{self._code_block_border}{code_block.style}{self._line_brake}"""
+        )
+        _codeblock_tail = (
+            f"""{self._line_brake}{self._code_block_border}{self._line_brake * 2}"""
+        )
+        self._report += _codeblock_head + code_block.code + _codeblock_tail
 
     def _render_brake(self):
         self._report += self._line_brake
@@ -63,14 +75,27 @@ class TextDocument:
         table_line_separator = (
             self._line_divider * (sum(col_length) + sep_count) + self._line_brake
         )
-        self._report += table_line_separator
+        # self._report += table_line_separator
         headers_justified = []
+        headers_bottom = []
         i = 0
         for itm in item.headers:
             headers_justified.append(f"{itm : ^{col_length[i]}}")
+            headers_bottom.append(self._col_justify)
             i += 1
-        self._report += self._col_divider.join(headers_justified) + self._line_brake
-        self._report += table_line_separator
+        self._report += (
+            self._col_starter
+            + self._col_divider.join(headers_justified)
+            + self._col_stopper
+            + self._line_brake
+        )
+        # self._report += table_line_separator
+        self._report += (
+            self._col_starter
+            + self._col_divider.join(headers_bottom)
+            + self._col_stopper
+            + self._line_brake
+        )
 
         for line in item.content:
             i = 0
@@ -78,19 +103,24 @@ class TextDocument:
             for itm in item.headers:
                 content_justified.append(f"{str(line[i]) : ^{col_length[i]}}")
                 i += 1
-            self._report += self._col_divider.join(content_justified) + self._line_brake
-        self._report += table_line_separator
+            self._report += (
+                self._col_starter
+                + self._col_divider.join(content_justified)
+                + self._col_starter
+                + self._line_brake
+            )
+        self._report += self._line_brake
 
 
-class TextDocumentBuilder(Builder):
+class MarkdownDocumentBuilder(Builder):
     def __init__(self) -> None:
         self.reset()
 
     def reset(self) -> None:
-        self._text_report = TextDocument()
+        self._text_report = MarkdownDocument()
 
     @property
-    def parts(self) -> TextDocument:
+    def parts(self) -> MarkdownDocument:
         parts = self._text_report
         self.reset()
         return parts

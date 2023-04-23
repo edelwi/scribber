@@ -13,11 +13,11 @@ pip install scribber
 ## Usage
 
 ```python
-from core.document import SimpleDocument, Title, EmptyLine, Paragraph, Table, Director
-from formats.excel.excel_document import ExcelDocumentBuilder
-from formats.markdown.markdown_document import MarkdownDocumentBuilder
-from formats.text.text_document import TextDocumentBuilder
-from formats.word.word_document import WordDocumentBuilder
+from scribber.core.document import SimpleDocument, Title, EmptyLine, Paragraph, Table, Director
+from scribber.formats.excel.excel_document import ExcelDocumentBuilder
+from scribber.formats.markdown.markdown_document import MarkdownDocumentBuilder
+from scribber.formats.text.text_document import TextDocumentBuilder
+from scribber.formats.word.word_document import WordDocumentBuilder
 
 doc = SimpleDocument()
 doc.add(Title(title="Funny report"))
@@ -89,8 +89,8 @@ It's Ok!
 
 ## requirements
 
-- lxml==4.9.1
-- pydantic==1.10.2
-- python-docx==0.8.11
-- typing_extensions==4.4.0
-- XlsxWriter==3.0.3
+- lxml>=4.9.1<5.0.0
+- pydantic>=1.10.2<2.0.0
+- python-docx>=0.8.11<1.0.0
+- typing_extensions>=4.4.0<5.0.0
+- XlsxWriter>=3.0.3<4.0.0

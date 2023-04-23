@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import FilePath
 
-from core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
+from scribber.core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
 
 import xlsxwriter
 
