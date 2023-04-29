@@ -2,11 +2,18 @@ from typing import Any
 
 from pydantic import FilePath
 
-from scribber.core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
+from scribber.core.document import (
+    Title,
+    Paragraph,
+    EmptyLine,
+    Table,
+    CodeBlock,
+    AbstractDocument,
+)
 from docx import Document
 
 
-class WordDocument:
+class WordDocument(AbstractDocument):
     def __init__(self) -> None:
         self.parts = []
         self._report = Document()
@@ -39,7 +46,7 @@ class WordDocument:
         self._report.add_paragraph(paragraph.text)
 
     def _render_code_block(self, code_block: CodeBlock):
-        self._report.add_paragraph(code_block.code, style='Intense Quote')
+        self._report.add_paragraph(code_block.code, style="Intense Quote")
 
     def _render_brake(self):
         self._report.add_paragraph("")
@@ -53,32 +60,3 @@ class WordDocument:
             row_cells = table.add_row().cells
             for j, itm in enumerate(row):
                 row_cells[j].text = str(itm)
-
-
-class WordDocumentBuilder(Builder):
-    def __init__(self) -> None:
-        self.reset()
-
-    def reset(self) -> None:
-        self._word_report = WordDocument()
-
-    @property
-    def parts(self) -> WordDocument:
-        parts = self._word_report
-        self.reset()
-        return parts
-
-    def add_title(self, title: Title) -> None:
-        self._word_report.add(title)
-
-    def add_table(self, table: Table) -> None:
-        self._word_report.add(table)
-
-    def add_paragraph(self, paragraph: Paragraph) -> None:
-        self._word_report.add(paragraph)
-
-    def add_brake(self):
-        self._word_report.add(EmptyLine())
-
-    def add_code_block(self, code_block: CodeBlock):
-        self._word_report.add(code_block)
