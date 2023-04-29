@@ -5,12 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="scribber",
-    version="v0.1.16",
+    version="v0.1.17",
     author="Evgeniy Semenov",
     author_email="edelwi@yandex.ru",
     license="MIT",
-    description="A simple document generator with not very rich functionality that can export a document to "
-                "some formats such as text, docx, xlsx and markdown.",
+    description="A simple document generator with not very rich functionality "
+                "that can export a document to some formats such as text, docx, "
+                "xlsx and markdown.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/edelwi/scribber",

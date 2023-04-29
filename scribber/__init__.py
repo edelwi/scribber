@@ -6,8 +6,9 @@ from .core.document import (
     Table,
     Director,
     CodeBlock,
+    DocumentBuilder,
 )
-from .formats.excel.excel_document import ExcelDocumentBuilder
-from .formats.markdown.markdown_document import MarkdownDocumentBuilder
-from .formats.text.text_document import TextDocumentBuilder
-from .formats.word.word_document import WordDocumentBuilder
+from .formats.excel.excel_document import ExcelDocument
+from .formats.markdown.markdown_document import MarkdownDocument
+from .formats.text.text_document import TextDocument
+from .formats.word.word_document import WordDocument

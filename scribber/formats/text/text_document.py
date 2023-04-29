@@ -2,10 +2,17 @@ from typing import Any
 
 from pydantic import FilePath
 
-from scribber.core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
+from scribber.core.document import (
+    Title,
+    Paragraph,
+    EmptyLine,
+    Table,
+    CodeBlock,
+    AbstractDocument,
+)
 
 
-class TextDocument:
+class TextDocument(AbstractDocument):
     def __init__(self) -> None:
         self.parts = []
         self._report = ""
@@ -80,32 +87,3 @@ class TextDocument:
                 i += 1
             self._report += self._col_divider.join(content_justified) + self._line_brake
         self._report += table_line_separator
-
-
-class TextDocumentBuilder(Builder):
-    def __init__(self) -> None:
-        self.reset()
-
-    def reset(self) -> None:
-        self._text_report = TextDocument()
-
-    @property
-    def parts(self) -> TextDocument:
-        parts = self._text_report
-        self.reset()
-        return parts
-
-    def add_title(self, title: Title) -> None:
-        self._text_report.add(title)
-
-    def add_table(self, table: Table) -> None:
-        self._text_report.add(table)
-
-    def add_paragraph(self, paragraph: Paragraph) -> None:
-        self._text_report.add(paragraph)
-
-    def add_brake(self):
-        self._text_report.add(EmptyLine())
-
-    def add_code_block(self, code_block: CodeBlock):
-        self._text_report.add(code_block)

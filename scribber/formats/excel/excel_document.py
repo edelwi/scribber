@@ -2,19 +2,26 @@ from typing import Any
 
 from pydantic import FilePath
 
-from scribber.core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
+from scribber.core.document import (
+    Title,
+    Paragraph,
+    EmptyLine,
+    Table,
+    CodeBlock,
+    AbstractDocument,
+)
 
 import xlsxwriter
 
 
-class ExcelDocument:
+class ExcelDocument(AbstractDocument):
     def __init__(self) -> None:
         self._row = 0
         self._col = 0
         self.parts = []
         self._workbook = xlsxwriter.Workbook()
         self._report = self._workbook.add_worksheet()
-        self._bold_format = self._workbook.add_format({'bold': True})
+        self._bold_format = self._workbook.add_format({"bold": True})
 
     def add(self, part: Any) -> None:
         self.parts.append(part)
@@ -66,32 +73,3 @@ class ExcelDocument:
                 self._col += 1
             self._col = 0
             self._row += 1
-
-
-class ExcelDocumentBuilder(Builder):
-    def __init__(self) -> None:
-        self.reset()
-
-    def reset(self) -> None:
-        self._excel_report = ExcelDocument()
-
-    @property
-    def parts(self) -> ExcelDocument:
-        parts = self._excel_report
-        self.reset()
-        return parts
-
-    def add_title(self, title: Title) -> None:
-        self._excel_report.add(title)
-
-    def add_table(self, table: Table) -> None:
-        self._excel_report.add(table)
-
-    def add_paragraph(self, paragraph: Paragraph) -> None:
-        self._excel_report.add(paragraph)
-
-    def add_brake(self):
-        self._excel_report.add(EmptyLine())
-
-    def add_code_block(self, code_block: CodeBlock):
-        self._excel_report.add(code_block)

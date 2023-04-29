@@ -2,10 +2,17 @@ from typing import Any
 
 from pydantic import FilePath
 
-from scribber.core.document import Title, Paragraph, EmptyLine, Table, Builder, CodeBlock
+from scribber.core.document import (
+    Title,
+    Paragraph,
+    EmptyLine,
+    Table,
+    CodeBlock,
+    AbstractDocument,
+)
 
 
-class MarkdownDocument:
+class MarkdownDocument(AbstractDocument):
     def __init__(self) -> None:
         self.parts = []
         self._report = ""
@@ -62,8 +69,8 @@ class MarkdownDocument:
 
     def _render_table(self, item):
         col_length = []
-        col_count = len(item.headers)
-        sep_count = col_count - 1 if col_count > 1 else 1
+        # col_count = len(item.headers)
+        # sep_count = col_count - 1 if col_count > 1 else 1
         for itm in item.headers:
             col_length.append(len(itm) + 2)
         col = 0
@@ -72,9 +79,9 @@ class MarkdownDocument:
             if col_length[col] < column_content_length + 2:
                 col_length[col] = column_content_length + 2
             col += 1
-        table_line_separator = (
-            self._line_divider * (sum(col_length) + sep_count) + self._line_brake
-        )
+        # table_line_separator = (
+        #     self._line_divider * (sum(col_length) + sep_count) + self._line_brake
+        # )
         # self._report += table_line_separator
         headers_justified = []
         headers_bottom = []
@@ -110,32 +117,3 @@ class MarkdownDocument:
                 + self._line_brake
             )
         self._report += self._line_brake
-
-
-class MarkdownDocumentBuilder(Builder):
-    def __init__(self) -> None:
-        self.reset()
-
-    def reset(self) -> None:
-        self._text_report = MarkdownDocument()
-
-    @property
-    def parts(self) -> MarkdownDocument:
-        parts = self._text_report
-        self.reset()
-        return parts
-
-    def add_title(self, title: Title) -> None:
-        self._text_report.add(title)
-
-    def add_table(self, table: Table) -> None:
-        self._text_report.add(table)
-
-    def add_paragraph(self, paragraph: Paragraph) -> None:
-        self._text_report.add(paragraph)
-
-    def add_brake(self):
-        self._text_report.add(EmptyLine())
-
-    def add_code_block(self, code_block: CodeBlock):
-        self._text_report.add(code_block)

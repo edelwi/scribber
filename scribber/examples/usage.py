@@ -6,10 +6,11 @@ from scribber import (
     Table,
     Director,
     CodeBlock,
-    ExcelDocumentBuilder,
-    MarkdownDocumentBuilder,
-    TextDocumentBuilder,
-    WordDocumentBuilder,
+    DocumentBuilder,
+    ExcelDocument,
+    MarkdownDocument,
+    TextDocument,
+    WordDocument
 )
 
 CODE_EXAMPLE = """
@@ -50,10 +51,10 @@ if __name__ == "__main__":
     doc.add(Paragraph(text="It's Ok!"))
 
     director = Director()
-    text_report_builder = TextDocumentBuilder()
-    word_report_builder = WordDocumentBuilder()
-    excel_report_builder = ExcelDocumentBuilder()
-    marckdown_report_builder = MarkdownDocumentBuilder()
+    text_report_builder = DocumentBuilder(doc=TextDocument())
+    word_report_builder = DocumentBuilder(doc=WordDocument())
+    excel_report_builder = DocumentBuilder(doc=ExcelDocument())
+    marckdown_report_builder = DocumentBuilder(doc=MarkdownDocument())
 
     print("Make a Text Document")
     director.builder = text_report_builder
