@@ -10,7 +10,7 @@ from scribber import (
     ExcelDocument,
     MarkdownDocument,
     TextDocument,
-    WordDocument
+    WordDocument,
 )
 
 CODE_EXAMPLE = """
@@ -44,17 +44,21 @@ if __name__ == "__main__":
             ],
         )
     )
-    doc.add(EmptyLine())
-    doc.add(Title(title="Code block", level=2))
-    doc.add(CodeBlock(style="python", code=CODE_EXAMPLE))
-    doc.add(CodeBlock(style="console", code=CODE_RESULT))
-    doc.add(Paragraph(text="It's Ok!"))
+    doc.extend(
+        (
+            EmptyLine(),
+            Title(title="Code block", level=2),
+            CodeBlock(style="python", code=CODE_EXAMPLE),
+            CodeBlock(style="console", code=CODE_RESULT),
+            Paragraph(text="It's Ok!"),
+        )
+    )
 
     director = Director()
     text_report_builder = DocumentBuilder(doc=TextDocument())
     word_report_builder = DocumentBuilder(doc=WordDocument())
     excel_report_builder = DocumentBuilder(doc=ExcelDocument())
-    marckdown_report_builder = DocumentBuilder(doc=MarkdownDocument())
+    markdown_report_builder = DocumentBuilder(doc=MarkdownDocument())
 
     print("Make a Text Document")
     director.builder = text_report_builder
@@ -71,10 +75,10 @@ if __name__ == "__main__":
     director.build_report_from_doc(doc)
     excel_report_builder.parts.save("test.xlsx")
 
-    print("Make a Marckdown Document")
-    director.builder = marckdown_report_builder
+    print("Make a Markdown Document")
+    director.builder = markdown_report_builder
     director.build_report_from_doc(doc)
-    marckdown_report_builder.parts.save("test.md")
+    markdown_report_builder.parts.save("test.md")
 
     print()
     print("Build without Director")

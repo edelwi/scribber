@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="scribber",
-    version="v0.1.18",
+    version="v0.1.19",
     author="Evgeniy Semenov",
     author_email="edelwi@yandex.ru",
     license="MIT",

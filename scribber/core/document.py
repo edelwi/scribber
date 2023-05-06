@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Any, List, Protocol
+from typing import Any, List, Protocol, Iterable
 from pydantic import BaseModel, validator
 
 
@@ -63,6 +63,9 @@ class AbstractDocument(Protocol):
     def get_result(self) -> Any:
         ...
 
+    def extend(self, parts: Iterable[Any]) -> None:
+        ...
+
 
 class SimpleDocument:
     def __init__(self) -> None:
@@ -73,6 +76,10 @@ class SimpleDocument:
 
     def get_result(self) -> List[Any]:
         return self.parts
+
+    def extend(self, parts: Iterable[Any]) -> None:
+        for item in parts:
+            self.add(item)
 
 
 class Builder(Protocol):
