@@ -8,13 +8,12 @@ from scribber.core.document import (
     EmptyLine,
     Table,
     CodeBlock,
-    AbstractDocument,
 )
 
 import xlsxwriter
 
 
-class ExcelDocument(AbstractDocument):
+class ExcelDocument:
     def __init__(self) -> None:
         self._row = 0
         self._col = 0

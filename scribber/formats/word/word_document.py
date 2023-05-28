@@ -8,12 +8,11 @@ from scribber.core.document import (
     EmptyLine,
     Table,
     CodeBlock,
-    AbstractDocument,
 )
 from docx import Document
 
 
-class WordDocument(AbstractDocument):
+class WordDocument:
     def __init__(self) -> None:
         self.parts = []
         self._report = Document()

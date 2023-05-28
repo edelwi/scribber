@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Any, List, Protocol, Iterable
+from typing import Any, List, Protocol, Iterable, Optional
 from pydantic import BaseModel, validator
 
 
@@ -7,13 +7,11 @@ class Title(BaseModel):
     title: str
     level: int = 1
 
-    @classmethod
-    @validator("title")
+    @validator("title",)
     def title_not_empty(cls, v):
         assert len(v) > 0, "must be one or more symbols"
         return v
 
-    @classmethod
     @validator("level")
     def level_in_range(cls, v):
         assert 0 < v <= 6, "must be in 1..6 range"
@@ -23,7 +21,6 @@ class Title(BaseModel):
 class Paragraph(BaseModel):
     text: str
 
-    @classmethod
     @validator("text")
     def field_not_empty(cls, v):
         assert len(v) > 0, "must be one or more symbols"
@@ -32,9 +29,8 @@ class Paragraph(BaseModel):
 
 class CodeBlock(BaseModel):
     code: str
-    style: str
+    style: Optional[str] = ""
 
-    @classmethod
     @validator("code")
     def field_not_empty(cls, v):
         assert len(v) > 0, "must be one or more symbols"
@@ -45,7 +41,6 @@ class Table(BaseModel):
     headers: List[str]
     content: List[Any]
 
-    @classmethod
     @validator("headers", "content")
     def not_empty(cls, v):
         assert len(v) > 0, "must not be empty"
@@ -132,30 +127,30 @@ class Director:
 
 class DocumentBuilder(Builder):
     def __init__(self, doc: AbstractDocument) -> None:
-        self._word_report = None
+        self._report = None
         self.__doc = doc
         self.reset()
 
     def reset(self) -> None:
-        self._word_report = self.__doc
+        self._report = self.__doc
 
     @property
-    def parts(self) -> Any:
-        parts = self._word_report
+    def parts(self) -> List:
+        parts = self._report
         self.reset()
         return parts
 
     def add_title(self, title: Title) -> None:
-        self._word_report.add(title)
+        self._report.add(title)
 
     def add_table(self, table: Table) -> None:
-        self._word_report.add(table)
+        self._report.add(table)
 
     def add_paragraph(self, paragraph: Paragraph) -> None:
-        self._word_report.add(paragraph)
+        self._report.add(paragraph)
 
-    def add_brake(self):
-        self._word_report.add(EmptyLine())
+    def add_brake(self) -> None:
+        self._report.add(EmptyLine())
 
-    def add_code_block(self, code_block: CodeBlock):
-        self._word_report.add(code_block)
+    def add_code_block(self, code_block: CodeBlock) -> None:
+        self._report.add(code_block)
